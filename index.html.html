@@ -65,6 +65,16 @@ select.fsel{padding:6px 12px;border-radius:10px;font-size:11px;font-weight:700;b
 </style>
 </head>
 <body>
+  <!-- Netlify Forms: hidden form for detection -->
+<form name="team-register" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field" />
+  <input type="hidden" name="form-name" value="team-register" />
+  <input name="team_name" />
+  <input name="captain_name" />
+  <input name="phone" />
+  <input name="player1" />
+  <input name="player2" />
+</form>
 <div id="app"></div>
 <script>
 const ADMIN_PASS="1234";
@@ -153,6 +163,31 @@ function rRules(){
 return `<div class="st anim d1">📖 القوانين</div><div class="cd anim d2" style="margin-bottom:16px">${RULES.map((r,i)=>`<div style="display:flex;gap:12px;margin-bottom:14px"><div style="width:28px;height:28px;border-radius:50%;flex-shrink:0;background:rgba(184,134,11,0.08);color:var(--g);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px">${i+1}</div><div style="font-size:13px;color:var(--t2);line-height:1.7">${r}</div></div>`).join('')}</div><div class="cd anim d3" style="margin-bottom:16px"><div style="font-weight:900;font-size:16px;color:var(--g);margin-bottom:14px">🏆 الجوائز</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">${[['🥇','الأول','var(--g)','الكأس + ذهبية'],['🥈','الثاني','#888','فضية'],['🥉','الثالث','#b07840','برونزية']].map(p=>`<div style="text-align:center;padding:16px 8px;border-radius:16px;border:1.5px solid var(--bd);box-shadow:var(--sh)"><div style="font-size:36px;margin-bottom:6px">${p[0]}</div><div style="font-weight:900;font-size:13px;color:${p[2]}">${p[1]}</div><div style="font-size:10px;color:var(--t3);margin-top:3px">${p[3]}</div></div>`).join('')}</div></div><div class="cd anim d4"><div style="font-weight:900;font-size:16px;color:var(--g);margin-bottom:14px">🃏 المشاريع</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[['سرى','3 أوراق متتالية','+2'],['خمسين','4 أوراق متتالية','+50'],['مية','5 متتالية أو 4 متشابهة','+100'],['400','4 أوراق نفس الرقم','+400'],['بلوت','الشايب والبنت من الحكم','+20']].map(x=>`<div style="padding:10px;border-radius:12px;background:var(--bg)"><div style="display:flex;justify-content:space-between"><span style="font-weight:800">${x[0]}</span><span style="font-size:11px;font-weight:700;color:var(--grn)">${x[2]}</span></div><div style="font-size:10px;color:var(--t3);margin-top:2px">${x[1]}</div></div>`).join('')}</div></div>`}
 
 function rReg(){
+return `<div class="st anim d1">✍️ سجّل فريقك</div>
+<div class="cd anim d2" style="max-width:500px">
+  <div style="margin-bottom:14px;font-size:13px;color:var(--t2);line-height:1.6">
+    سجّل فريقك (لاعبين اثنين) وسيتم المراجعة من الأدمن.
+  </div>
+
+  <form name="team-register" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
+    <input type="hidden" name="form-name" value="team-register" />
+    <input type="hidden" name="bot-field" />
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input class="inp" name="team_name" placeholder="اسم الفريق" required />
+      <input class="inp" name="captain_name" placeholder="اسم الكابتن" />
+      <input class="inp" name="phone" placeholder="رقم التواصل" />
+      <div style="font-size:12px;font-weight:700;color:var(--t2);margin-top:4px">اللاعبون</div>
+      <input class="inp" name="player1" placeholder="اللاعب الأول" required />
+      <input class="inp" name="player2" placeholder="اللاعب الثاني" required />
+
+      <button class="btn btn-g" type="submit" style="width:100%;justify-content:center;padding:13px;font-size:14px;margin-top:8px">
+        📤 تقديم الطلب
+      </button>
+    </div>
+  </form>
+</div>`;
+}
 return `<div class="st anim d1">✍️ سجّل فريقك</div><div class="cd anim d2" style="max-width:500px"><div style="margin-bottom:14px;font-size:13px;color:var(--t2);line-height:1.6">سجّل فريقك (لاعبين اثنين) وسيتم المراجعة من الأدمن.</div><div style="display:flex;flex-direction:column;gap:10px"><input class="inp" id="rn" placeholder="اسم الفريق"/><input class="inp" id="rc" placeholder="اسم الكابتن"/><input class="inp" id="rp" placeholder="رقم التواصل"/><div style="font-size:12px;font-weight:700;color:var(--t2);margin-top:4px">اللاعبون</div><input class="inp" id="rpl1" placeholder="اللاعب الأول"/><input class="inp" id="rpl2" placeholder="اللاعب الثاني"/><button class="btn btn-g" style="width:100%;justify-content:center;padding:13px;font-size:14px;margin-top:8px" onclick="subR()">📤 تقديم الطلب</button></div></div>`}
 function subR(){let n=document.getElementById('rn')?.value,p1=document.getElementById('rpl1')?.value,p2=document.getElementById('rpl2')?.value;if(!n){alert('أدخل اسم الفريق');return}if(!p1||!p2){alert('أدخل اسمي اللاعبين');return}S.pend.push({id:Date.now(),name:n,cap:document.getElementById('rc')?.value||'',ph:document.getElementById('rp')?.value||'',pl:[p1,p2],lg:'🏆'});S.notifs.unshift({id:Date.now(),tp:'system',msg:'طلب تسجيل: '+n,tm:'الآن',rd:0});alert('تم تقديم الطلب ✅');goTo('home')}
 
